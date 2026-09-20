@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/*
+ * Warm, low-glare palette. The app gets used in dim rooms - lounges, basements,
+ * a porch at night - so dark is the default and light is the opt-in.
+ */
+:root {
+  --bg: #17130f;
+  --surface: #211b16;
+  --surface-2: #2b231c;
+  --border: #3a2f26;
+  --text: #f2e9df;
+  --muted: #a99883;
+  --accent: #c8873f;
+  --accent-soft: #3a2a17;
+  --ok: #7fa66a;
+  --warn: #d79a3c;
+  --danger: #cc6248;
+  --radius: 14px;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f3ec;
+  --surface: #ffffff;
+  --surface-2: #f0e9df;
+  --border: #ded3c4;
+  --text: #241d16;
+  --muted: #7a6b59;
+  --accent: #9c5f1d;
+  --accent-soft: #f2e3cf;
+  --ok: #4f7a3c;
+  --warn: #a97318;
+  --danger: #a8402a;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f7f3ec;
+    --surface: #ffffff;
+    --surface-2: #f0e9df;
+    --border: #ded3c4;
+    --text: #241d16;
+    --muted: #7a6b59;
+    --accent: #9c5f1d;
+    --accent-soft: #f2e3cf;
+    --ok: #4f7a3c;
+    --warn: #a97318;
+    --danger: #a8402a;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: dark light;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Room for the fixed bottom nav, plus the iOS home indicator. */
+  padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  overscroll-behavior-y: none;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* 16px minimum stops iOS Safari zooming the whole page on focus. */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+input[type="range"] {
+  accent-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
