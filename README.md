@@ -58,6 +58,8 @@ unexpected, `extractReading` is where to look.
   warning at 73°F where tobacco beetles become a risk
 - **Value and habits** — score per dollar, burn rate, how many weeks of stock is left
 - **Band scanning** — photograph a band, get brand/line/vitola back, confirm and save
+- **Editing** — amend a cigar or a purchase after the fact; renaming onto a
+  blend you already own merges the two rather than splitting its rating history
 - **Export / import** — your data as a JSON file you own
 
 ## How scoring works
@@ -90,6 +92,20 @@ supabase/         Phase 2 schema (not needed to run the app)
 
 Data lives in IndexedDB via Dexie. `src/lib/db.ts` mirrors
 `supabase/migrations/0001_init.sql` field for field.
+
+### Editing, merging and deleting
+
+Both destructive paths are built to protect the rating history, since that's
+what the aging analysis is made of:
+
+- **Merging.** Editing a cigar's brand/line/vitola onto an identity you already
+  own prompts to merge. Purchases, smokes and reviews are repointed to the
+  surviving blend in a single transaction. This is the fix for scanning the
+  same band twice.
+- **Deleting a purchase.** Smokes logged from it are *kept* and simply unlinked
+  — they carry their own `restedDays` snapshot, so the trend line survives the
+  box being thrown out. A blend left with no purchases and no smokes is cleaned
+  up; one with history is not.
 
 ## Phase 2: multi-device sync
 
@@ -127,7 +143,7 @@ node scripts/make-icons.mjs   # regenerate PWA icons
 ## Known gaps
 
 - **Govee response parsing is unverified against live hardware** (see above).
-- Editing a cigar after saving isn't built yet — you can add and log, not amend.
+- Logged smokes and their reviews can't be edited yet — cigars and purchases can.
 - No background alerts. A local-first PWA has no server to run a cron, so RH
   warnings appear when you open the app. Background push needs Phase 2.
 - Photos are stored as downscaled data URLs in IndexedDB. Fine for hundreds of

@@ -73,7 +73,7 @@ export default function InventoryPage() {
     <>
       <PageHeader
         title="Cigars"
-        subtitle={`${totalSticks} sticks in ${rows.length} entries`}
+        subtitle={`${totalSticks} sticks in ${rows.length} entries · tap one to edit`}
         action={
           <Link
             href="/inventory/new"
@@ -139,7 +139,11 @@ export default function InventoryPage() {
             return (
               <Card key={item.id}>
                 <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/inventory/${item.id}`}
+                    className="min-w-0 flex-1"
+                    aria-label={`Edit ${productLabel(product)}`}
+                  >
                     <p className="truncate font-medium">{productLabel(product)}</p>
                     <p className="mt-0.5 text-xs" style={{ color: "var(--muted)" }}>
                       {[
@@ -162,7 +166,7 @@ export default function InventoryPage() {
                         <Pill>{money(item.pricePerStick)}</Pill>
                       )}
                     </div>
-                  </div>
+                  </Link>
                   <LinkButton href={`/log?item=${item.id}`} variant="ghost">
                     Smoke
                   </LinkButton>
